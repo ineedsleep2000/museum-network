@@ -2,6 +2,9 @@ from models.__init__ import CONN, CURSOR
 
 class Museum:
 
+################################################################
+# Classmethod to create table in db
+################################################################
     @classmethod
     def create_table(cls):
         sql="""
@@ -13,7 +16,10 @@ class Museum:
                 open_hours TEXT);
         """
         CURSOR.execute(sql)
-    
+
+################################################################
+# Classmethod to drop/ delete table from db
+################################################################  
     @classmethod
     def drop_table(cls):
         sql="""
@@ -21,13 +27,18 @@ class Museum:
         """
         CURSOR.execute(sql)
 
+################################################################
+# Classmethod to create instances
+################################################################
     @classmethod
     def create(cls, name, address, status, open_hours):
         museum= cls(name, address, status, open_hours)
         museum.save()
         return museum
-    
-############ get 1 thing from db  
+
+################################################################
+# Classmethod to get one instance
+################################################################
     @classmethod
     def instance_from_db(cls, row):
         museum = cls(
@@ -39,24 +50,33 @@ class Museum:
         )
         return museum
 
-############## get everything from db
+################################################################
+# Classmethod to get all instances
+################################################################
+
     @classmethod
     def get_all(cls):
         sql="SELECT * FROM museum;"
         return [cls.instance_from_db(row) for row in CURSOR.execute(sql).fetchall()]
-    
-    @classmethod
-    def find_by_name(cls, name):
-        sql = """
-            SELECT * FROM museum
-            WHERE name = ? 
-            LIMIT 1;
-        """
-        row = CURSOR.execute(sql, (name,)).fetchone()
-        if not row:
-            return None
-        return cls.instance_from_db(row)
-    
+
+################################################################
+# Classmethod to get an instance by name
+################################################################
+    # @classmethod
+    # def find_by_name(cls, name):
+    #     sql = """
+    #         SELECT * FROM museum
+    #         WHERE name = ? 
+    #         LIMIT 1;
+    #     """
+    #     row = CURSOR.execute(sql, (name,)).fetchone()
+    #     if not row:
+    #         return None
+    #     return cls.instance_from_db(row)
+
+################################################################
+# Classmethod to get an instance by ID
+################################################################
     @classmethod
     def find_museum_by_id(cls, id):
         sql = """
@@ -69,6 +89,9 @@ class Museum:
             return None
         return cls.instance_from_db(row)
 
+################################################################
+# __init__ function
+################################################################
     def __init__(self, name, address, status, open_hours, id= None):
         self.id= id
         self.name = name
@@ -76,6 +99,9 @@ class Museum:
         self.status= status
         self.open_hours= open_hours
 
+################################################################
+# Save instance method
+################################################################
     def save(self):
         sql= """
             INSERT INTO museum(name, address, status, open_hours)
@@ -84,11 +110,14 @@ class Museum:
         CURSOR.execute(
             sql, (self.name, self.address, self.status, self.open_hours)
         )
-        CONN.commit()
         self.id= (
             CURSOR.lastrowid
         )
+        CONN.commit()
 
+################################################################
+# Update instance method
+################################################################
     def update(self):
         sql = """
             UPDATE museum
@@ -98,6 +127,9 @@ class Museum:
         CURSOR.execute(sql, (self.name, self.address, self.status, self.open_hours, self.id))
         CONN.commit()
 
+################################################################
+# Delete instance method
+################################################################
     def delete(self):
         sql = """
             DELETE FROM museum WHERE id = ?;
@@ -105,7 +137,22 @@ class Museum:
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
+################################################################
+# join instance method
+################################################################
+    def join(self):
+        sql = """
+            SELECT exhibit.name
+            FROM exhibit
+            INNER JOIN museum ON exhibit.museum_id = museum.id
+            WHERE exhibit.museum_id = ?;
+        """
+        CURSOR.execute(sql, (self.id,))
+        return [{"exhibit_name": row[0]} for row in CURSOR.fetchall()]
 
+################################################################
+# __repr__
+################################################################
     def __repr__(self):
         return f"<Museum {self.id}: {self.name} | {self.address} | {self.status} | {self.open_hours}>"
     pass
