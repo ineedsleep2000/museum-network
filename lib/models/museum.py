@@ -147,8 +147,8 @@ class Museum:
             INNER JOIN museum ON exhibit.museum_id = museum.id
             WHERE exhibit.museum_id = ?;
         """
-        CURSOR.execute(sql, (self.id,))
-        return [{"exhibit_name": row[0]} for row in CURSOR.fetchall()]
+        
+        return [{"exhibit_name": row[0]} for row in CURSOR.execute(sql,(self.id,)).fetchall()]
 
 ################################################################
 # __repr__

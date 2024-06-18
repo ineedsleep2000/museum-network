@@ -115,11 +115,10 @@ def view_museum():
         if exhibits:
             for exhibit in exhibits:
                 print(f"| Exhibit name: {exhibit['exhibit_name']} |")
-                print("*************************************************")
-
-                museum_menu()
         else:
             print("No exhibits found for this museum.")
+        print("*************************************************")
+        museum_menu()
     elif museum_id == "0":
         exit_program()
     elif museum_id == "-":
