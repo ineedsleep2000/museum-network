@@ -2,6 +2,11 @@ from models.museum import Museum
 from models.exhibit import Exhibit
 
 ####################################################################
+#Global Logic
+def status_to_string(status):
+        return "Open" if status == 1 else "Closed"
+
+####################################################################
 #main menu
 def menu():
     print("""
@@ -36,16 +41,16 @@ def museum_menu():
     
           """)
     print("*********** Museum Menu ***********")
-    print("0. Exit Program")
     print("1. View List of All Museums")
     print("2. View Specific Museum")
     print("3. Create/ Add Museum")
     print("4. Update Museum")
     print("5. Delete Museum")
     print("-. to go back")
+    print("0. Exit Program")
     print("*********************************")
 
-    museum_menu_choice= input("Enter command here: ")
+    museum_menu_choice= input("Input Command Here: ")
     if museum_menu_choice == "0":
         exit_program()
     if museum_menu_choice == "1":
@@ -74,14 +79,15 @@ def list_of_all_museums():
           """)
     museums_list = Museum.get_all()
     for museum in museums_list:
-        print(f"|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Open: {museum.status}|Open hours:{museum.open_hours}|")
+        status_str = status_to_string(museum.status)
+        print(f"|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Status: {status_str}|Open hours:{museum.open_hours}|")
     print("*********** List of Museums ***********")
-    print("0. Exit Program")
+    print("1. View Specific Museum")
     print("-. To Go Back")
-    print("*To view more details about a museum, please input the Museum ID*")
+    print("0. Exit Program")
     print("*********************************")
 
-    museum_id = input("Select museum: ")
+    museum_id = input("Input Command Here: ")
     museum = Museum.find_museum_by_id(museum_id)
     if museum:
         view_museum()
@@ -95,8 +101,9 @@ def list_of_all_museums():
 ####################################################################
 #Museum_menu/ View Specific Museum   
 def view_museum():
-    museum_id = input("Enter museum ID to view: ")
+    museum_id = input("Input museum ID to view: ")
     museum = Museum.find_museum_by_id(museum_id)
+    status_str = status_to_string(museum.status)
     if museum:
         print(f"""
 
@@ -106,7 +113,7 @@ def view_museum():
     
           """)
         print("************** Selected Museum *******************")
-        print(f"|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Open: {museum.status}|Open hours:{museum.open_hours}|")
+        print(f"|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Status: {status_str}|Open hours:{museum.open_hours}|")
         print("---------------------------")
         print("List of Exhibits in Museum")
         print("*************************************************")
@@ -134,6 +141,7 @@ def add_museum():
     status = input("What is the status of museum? (1 for Open, 0 for Closed): ")
     open_hours = input ("Enter museum open hours(Ex. 9 AM - 5 PM): ")
     museum = Museum.create(name, address, bool(int(status)), open_hours)
+    status_str = status_to_string(museum.status)
     print(f"""
           
           |-------------------------------------------|
@@ -142,7 +150,7 @@ def add_museum():
     
           """)
     print("************** Added Museum *******************")
-    print(f"Added museum: |Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Open: {museum.status}|Open hours:{museum.open_hours}")
+    print(f"Added museum: |Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Status: {status_str}|Open hours:{museum.open_hours}")
     print("*********************************")
     list_of_all_museums()
 
@@ -151,6 +159,7 @@ def add_museum():
 def update_museum():
     museum_id = input("Enter museum ID to update: ")
     museum = Museum.find_museum_by_id(museum_id)
+    status_str = status_to_string(museum.status)
     if museum:
         museum.name = input(f"Enter new name ({museum.name}): ") or museum.name
         museum.address = input(f"Enter new address ({museum.address}): ") or museum.address
@@ -165,7 +174,7 @@ def update_museum():
     
           """)
         print("************** Updated Museum *******************")
-        print(f"Updated museum:|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Open: {museum.status}|Open hours:{museum.open_hours}")
+        print(f"Updated museum:|Museum ID: {museum.id}|Museum name: {museum.name} |address: {museum.address} |Status: {status_str}|Open hours:{museum.open_hours}")
         print("*********************************")
         list_of_all_museums()
     else:
@@ -176,6 +185,7 @@ def update_museum():
 def delete_museum():
     museum_id = input("Enter museum ID to delete: ")
     museum = Museum.find_museum_by_id(museum_id)
+    status_str = status_to_string(museum.status)
     if museum:
         museum.delete()
         print(f"""
@@ -186,7 +196,7 @@ def delete_museum():
     
           """)
         print("************** Deleted Museum *******************")
-        print(f"Deleted museum:|Museum name: {museum.name} |address: {museum.address} |Open: {museum.status}|Open hours:{museum.open_hours}")
+        print(f"Deleted museum:|Museum name: {museum.name} |address: {museum.address} |Status: {museum.status}|Open hours:{museum.open_hours}")
         print("*********************************")
         list_of_all_museums()
     else:
@@ -204,15 +214,15 @@ def exhibit_menu():
     
           """)
     print("************** Exhibit Menu *******************")
-    print("0. Exit Program")
     print("1. View List of All Exhibits")
     print("2. View Specific Exhibit")
     print("3. Create/ Add Exhibit")
     print("4. Update Exhibit")
     print("5. Delete Exhibit")
     print("-. To Go Back")
+    print("0. Exit Program")
     print("*********************************")
-    exhibit_menu_choice= input("Enter command here: ")
+    exhibit_menu_choice= input("Input Command Here: ")
     if exhibit_menu_choice == "0":
         exit_program()
     if exhibit_menu_choice == "1":
@@ -227,6 +237,7 @@ def exhibit_menu():
         delete_exhibit()
     if exhibit_menu_choice == "-":
         menu()
+
 ####################################################################
 #Exhibit_menu/ View List of All Exhibits  
 def list_of_all_exhibits():
@@ -239,16 +250,21 @@ def list_of_all_exhibits():
           """)
     exhibit_list = Exhibit.get_all()
     for exhibit in exhibit_list:
-        print(f"|Exhibit name: {exhibit.name} |status: {exhibit.status} |Exhibit located: {exhibit.museum_id}|")
+        status_str = status_to_string(exhibit.status)
+        print(f"|Museum ID: {exhibit.id}|Exhibit name: {exhibit.name} |Status: {status_str} |ID of Museum Location: {exhibit.museum_id}|")
     print("************** List of Exhibits *******************")
-    print("0. Exit Program")
+    print("1. View Specific Museum")
     print("-. to go back")
+    print("0. Exit Program")
     print("*********************************")
-    exhibit_list_choice = input("Enter Command Here: ")
+    exhibit_list_choice = input("Input Command Here: ")
+    specific_exhibit = Exhibit.find_exhibit_by_id(exhibit_list_choice)
     if exhibit_list_choice == "0":
         exit_program()
     elif exhibit_list_choice == "-":
         exhibit_menu()
+    elif specific_exhibit:
+        view_exhibit()
     else:
         print("Invalid choice")
 
@@ -257,6 +273,7 @@ def list_of_all_exhibits():
 def view_exhibit():
     exhibit_id = input("Enter exhibit ID to view: ")
     exhibit = Exhibit.find_exhibit_by_id(exhibit_id)
+    status_str = status_to_string(exhibit.status)
     if exhibit:
         print(f"""
           
@@ -266,7 +283,7 @@ def view_exhibit():
     
           """)
         print("************** Selected Exhibit *******************")
-        print(f"|Exhibit name: {exhibit.name} |status: {exhibit.status} |Museum located: {exhibit.museum_id}|")
+        print(f"|Exhibit name: {exhibit.name} |Status: {status_str} |Museum located: {exhibit.museum_id}|")
         print("*********************************")
         exhibit_menu()
     else:
@@ -279,6 +296,7 @@ def add_exhibit():
     status = input("What is the status of exhibit? (1 for Open, 0 for Closed): ")
     museum_id = input ("Enter museum Id, the exhibit is located: ")
     exhibit = Exhibit.create(name, bool(int(status)), museum_id)
+    status_str = status_to_string(exhibit.status)
     print(f"""
           
           |-------------------------------------------|
@@ -287,7 +305,7 @@ def add_exhibit():
     
           """)
     print("************** Added Exhibit *******************")
-    print(f"Added museum:|Exhibit name: {exhibit.name}|Open: {exhibit.status}|Museum Located: {exhibit.museum_id}")
+    print(f"Added museum:|Exhibit name: {exhibit.name}|Status: {status_str}|Museum Located: {exhibit.museum_id}")
     print("*********************************")
     list_of_all_exhibits()
 
@@ -297,6 +315,7 @@ def add_exhibit():
 def update_exhibit():
     exhibit_id = input("Enter exhibit ID to update: ")
     exhibit = Exhibit.find_exhibit_by_id(exhibit_id)
+    status_str = status_to_string(exhibit.status)
     if exhibit:
         exhibit.name = input(f"Enter new name ({exhibit.name}): ") or exhibit.name
         exhibit.status = bool(int(input(f"Is the exhibit Open or Closed? (1 for Yes, 0 for No, current status==>{exhibit.status}): ") or exhibit.status))
@@ -310,7 +329,7 @@ def update_exhibit():
     
           """)
         print("************** Update Exhibit *******************")
-        print(f"Updated exhibit:|Exhibit Id: {exhibit.id} |Exhibit name: {exhibit.name}|Open: {exhibit.status}|Museum Located: {exhibit.museum_id}")
+        print(f"Updated exhibit:|Exhibit Id: {exhibit.id} |Exhibit name: {exhibit.name}|Status: {status_str}|Museum Located: {exhibit.museum_id}")
         print("*********************************")
         list_of_all_exhibits()
     else:
@@ -321,6 +340,7 @@ def update_exhibit():
 def delete_exhibit():
     exhibit_id = input("Enter exhibit ID to delete: ")
     exhibit = Exhibit.find_exhibit_by_id(exhibit_id)
+    status_str = status_to_string(exhibit.status)
     if exhibit:
         exhibit.delete()
         print(f"""
@@ -331,7 +351,7 @@ def delete_exhibit():
     
           """)
         print("************** Deleted Exhibit *******************")
-        print(f"Deleted exhibit:|Exhibit name: {exhibit.name}|Open: {exhibit.status}|Museum Located: {exhibit.museum_id}")
+        print(f"Deleted exhibit:|Exhibit name: {exhibit.name}|Status: {status_str}|Museum Located: {exhibit.museum_id}")
         print("*********************************")
         list_of_all_exhibits()
     else:
