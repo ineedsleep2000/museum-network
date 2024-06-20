@@ -10,7 +10,21 @@ def status_to_string(status):
 #main menu
 def menu():
     print("""
-          
+       
+                ⠀⠀⠀⢀⣀⣤⣶⣶⣶⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠈⣿⡿⠟⠋⠁⠀⠈⣿⣿⠀⢸⣿⠛⠛⠿⣶⣦⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠈⣤⣴⣾⣿⠓⠀⣿⣿⡀⣾⡟⠀⠀⠀⠀⠙⣿⡿⢿⣿⣿⣿⣶⣄⡀⠀⠀
+                ⠀⠀⠀⣿⣿⣿⣁⣀⣰⣿⣿⣿⣿⣷⣶⣶⣷⣦⣤⣿⣄⣠⣿⣿⣿⣷⣬⣹⡄⠀
+                ⠀⣠⣾⣿⣯⣉⡉⠉⠉⠉⣹⡿⠋⠉⠙⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀
+                ⠀⢻⣿⣿⣿⠻⣿⣷⣶⣾⣿⠁⠀⠀⠀⠀⠘⠁⠈⣿⡿⠿⢿⣿⣿⣿⣿⡿⠀⠀
+                ⠀⠀⠻⣿⣿⣶⣿⣿⣿⣿⣿⣷⣤⠀⠀⠀⠀⠀⠈⠁⠀⠀⣼⠟⠀⢸⡿⠁⠀⠀
+                ⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡔⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣾⠟⠀⢀⡜⠀⢀⡄⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠈⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣿⣁⣴⣿⠁⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠟⠁⠀⠀⠀⠀⠀⠀⠀
+    
           |-------------------------------------------|
           |******|WELCOME TO THE MUSEUM NETWORK|******|
           |-------------------------------------------|
@@ -253,7 +267,7 @@ def list_of_all_exhibits():
         status_str = status_to_string(exhibit.status)
         print(f"|Museum ID: {exhibit.id}|Exhibit name: {exhibit.name} |Status: {status_str} |ID of Museum Location: {exhibit.museum_id}|")
     print("************** List of Exhibits *******************")
-    print("1. View Specific Museum")
+    print("1. View Specific Ehibit")
     print("-. to go back")
     print("0. Exit Program")
     print("*********************************")
@@ -283,7 +297,7 @@ def view_exhibit():
     
           """)
         print("************** Selected Exhibit *******************")
-        print(f"|Exhibit name: {exhibit.name} |Status: {status_str} |Museum located: {exhibit.museum_id}|")
+        print(f"|Exhibit name: {exhibit.name} |Status: {status_str} |ID of Museum Location: {exhibit.museum_id}|")
         print("*********************************")
         exhibit_menu()
     else:
