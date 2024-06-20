@@ -100,6 +100,19 @@ class Museum:
         self.open_hours= open_hours
 
 ################################################################
+# Property setter
+################################################################
+    @property
+    def name(self):
+        return self._name 
+    
+    @name.setter
+    def name(self, name):
+        if isinstance(name, str) and 3 <= len(name):
+            self._name = name
+        else:
+            return Exception("Must be a string")   
+################################################################
 # Save instance method
 ################################################################
     def save(self):
