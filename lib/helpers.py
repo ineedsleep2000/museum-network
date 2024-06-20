@@ -210,7 +210,7 @@ def delete_museum():
     
           """)
         print("************** Deleted Museum *******************")
-        print(f"Deleted museum:|Museum name: {museum.name} |address: {museum.address} |Status: {museum.status}|Open hours:{museum.open_hours}")
+        print(f"Deleted museum:|Museum name: {museum.name} |address: {museum.address} |Status: {status_str}|Open hours:{museum.open_hours}")
         print("*********************************")
         list_of_all_museums()
     else:
